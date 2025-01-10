@@ -1,6 +1,7 @@
 // Función para obtener y mostrar la lista de animes
 async function fetchAnimes() {
-  const apiUrl = 'https://localhost:7006/api/Anime'; // Cambia esta URL a la URL de tu API
+  const apiUrl = 'https://dwarfanimeapiprova-gtbfechmcganb2aw.spaincentral-01.azurewebsites.net/api/Anime'; 
+ // Cambia esta URL a la URL de tu API
   const animeListDiv = document.getElementById('anime-list');
 
   try {
@@ -53,7 +54,8 @@ async function addAnime(event) {
 
   console.log('Datos enviados:', anime); // Depuración
 
-  const apiUrl = 'https://localhost:7006/api/Anime'; // Cambia esta URL a la URL de tu API
+  const apiUrl = 'https://dwarfanimeapiprova-gtbfechmcganb2aw.spaincentral-01.azurewebsites.net/api/Anime'; 
+  // Cambia esta URL a la URL de tu API
 
   try {
       const response = await fetch(apiUrl, {

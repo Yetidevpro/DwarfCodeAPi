@@ -24,11 +24,11 @@ builder.Services.AddSwaggerGen();
 // Configuración de CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.AllowAnyOrigin()  // Permitir solicitudes desde cualquier origen
-              .AllowAnyHeader()  // Permitir cualquier encabezado
-              .AllowAnyMethod(); // Permitir cualquier método HTTP (GET, POST, etc.)
+        policy.WithOrigins("https://red-wave-088e75903.4.azurestaticapps.net") // URL de tu frontend
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -59,6 +59,8 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 // Mapear controladores
