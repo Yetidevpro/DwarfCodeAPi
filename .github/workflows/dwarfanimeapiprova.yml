@@ -1,4 +1,5 @@
 name: Compile e implemente la aplicación de .NET Core en la aplicación web dwarfanimeapiprova con el servicio API Management DwarfAnimeBackendapitry-DwarfAnimeBackend
+
 on:
   push:
     branches:
@@ -14,11 +15,10 @@ env:
   SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
   SWASHBUCKLE_DOTNET_CORE_VERSION: 3.1.x
   API_IMPORT_SPECIFICATION_PATH: .\publish\swagger.json
-  API_IMPORT_DLL: .\bin\Release\net8.0\DwarfAnimeBackend.dll
-  API_IMPORT_VERSION: v1
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: .
+  PUBLISHED_DLL_PATH: .\publish\DwarfAnimeBackend.dll  # Ruta del archivo DLL publicado
 jobs:
   build:
     runs-on: windows-latest
@@ -44,12 +44,13 @@ jobs:
       run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
       working-directory: ${{ env.WORKING_DIRECTORY }}
     - name: Generate Open API Specification Document
-      run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "${{ env.API_IMPORT_VERSION }}"
+      run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.PUBLISHED_DLL_PATH }}" "v1" # Generación del Swagger desde el DLL publicado
     - name: Publish Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
   deploy:
     runs-on: windows-latest
     needs: build
