@@ -5,23 +5,14 @@ using DwarfCodeData;
 //git@github.com:Yetidevpro/DwarfCodeApi.git
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar DbContext al contenedor de servicios
+// Configuración de la base de datos para usar la cadena de conexión directamente
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(async connection =>
-    {
-        var credential = new ManagedIdentityCredential();
-        var token = await credential.GetTokenAsync(new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" }));
-
-        var connectionString = "Server=tcp:dwarfanimeprova.database.windows.net,1433;Database=DwarfAnimeProva;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        var sqlConnection = new SqlConnection(connectionString)
-        {
-            AccessToken = token.Token
-        };
-
-        options.UseSqlServer(sqlConnection);
-    });
+    // Usar la cadena de conexión del archivo appsettings.json
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseSqlServer(connectionString);
 });
+
 
 
 // Agregar servicios de controladores
@@ -66,8 +57,9 @@ app.UseCors("AllowSpecificOrigin");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    //dbContext.Database.Migrate();  // Descomentar si es necesario aplicar migraciones automáticamente
+    dbContext.Database.Migrate();  // Asegúrate de que las migraciones se apliquen
 }
+
 
 app.MapControllers();
 
