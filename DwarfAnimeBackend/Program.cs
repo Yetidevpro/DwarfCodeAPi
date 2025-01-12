@@ -1,19 +1,34 @@
+using Azure.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using DwarfCodeData;
-
+//git@github.com:Yetidevpro/DwarfCodeApi.git
 var builder = WebApplication.CreateBuilder(args);
 
 // Agregar DbContext al contenedor de servicios
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlServer(async connection =>
+    {
+        var credential = new ManagedIdentityCredential();
+        var token = await credential.GetTokenAsync(new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" }));
+
+        var connectionString = "Server=tcp:dwarfanimeprova.database.windows.net,1433;Database=DwarfAnimeProva;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        var sqlConnection = new SqlConnection(connectionString)
+        {
+            AccessToken = token.Token
+        };
+
+        options.UseSqlServer(sqlConnection);
+    });
+});
+
 
 // Agregar servicios de controladores
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Manejo de ciclos de referencia
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        // Si es necesario, también puedes aumentar la profundidad máxima aquí
         options.JsonSerializerOptions.MaxDepth = 64;
     });
 
@@ -44,10 +59,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Activar CORS
-app.UseCors("AllowAll"); // Esto permite las solicitudes de cualquier origen
-
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseCors("AllowSpecificOrigin");
 
 // Ejecutar migraciones si es necesario
 using (var scope = app.Services.CreateScope())
@@ -56,16 +68,6 @@ using (var scope = app.Services.CreateScope())
     //dbContext.Database.Migrate();  // Descomentar si es necesario aplicar migraciones automáticamente
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-// Mapear controladores
 app.MapControllers();
 
 app.Run();
-
-
