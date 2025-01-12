@@ -41,7 +41,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("https://red-wave-088e75903.4.azurestaticapps.net") // URL de tu frontend
+        policy.WithOrigins("https://blue-grass-020f9f303.4.azurestaticapps.net")
+              // URL de tu frontend
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
