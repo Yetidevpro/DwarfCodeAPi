@@ -3,7 +3,7 @@ name: Compile e implemente la aplicación de .NET Core en la aplicación web dwa
 on:
   push:
     branches:
-    - BackendDwarfAnimeCode
+      - BackendDwarfAnimeCode
 
 env:
   AZURE_WEBAPP_NAME: dwarfanimeapiprova
@@ -48,20 +48,23 @@ jobs:
         run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
 
       - name: Publish
-        run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output .\DwarfAnimeBackend\publish
+
+      - name: List files in the publish folder
+        run: dir .\DwarfAnimeBackend\publish
 
       - name: Install Swashbuckle CLI .NET Global Tool
         run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
         working-directory: ${{ env.WORKING_DIRECTORY }}
 
       - name: Generate Open API Specification Document
-        run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "${{ env.API_IMPORT_VERSION }}"
+        run: swagger tofile --output ".\DwarfAnimeBackend\publish\swagger.json" ".\DwarfAnimeBackend\publish\DwarfAnimeBackend.dll" "v1"
 
       - name: Publish Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path: .\DwarfAnimeBackend\publish
 
   deploy:
     runs-on: windows-latest
@@ -71,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path: .\DwarfAnimeBackend\publish
 
       - name: Azure Login
         uses: azure/login@v2
@@ -87,7 +90,6 @@ jobs:
       - name: Import API into Azure API Management
         run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.API_IMPORT_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
 
-      - name: logout
-        run: >
-          az logout
+      - name: Logout from Azure
+        run: az logout
 
