@@ -41,7 +41,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configuración del pipeline de middleware
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -53,7 +53,7 @@ app.UseHttpsRedirection();
 // Activar CORS
 app.UseCors("AllowSpecificOrigin");
 
-// Ejecutar migraciones si es necesario
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
