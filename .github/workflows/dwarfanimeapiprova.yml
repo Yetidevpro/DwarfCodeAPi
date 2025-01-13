@@ -48,13 +48,7 @@ jobs:
         run: |
           echo "Listing files in the publish directory..."
           dir ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-      - name: Install Swashbuckle CLI
-        run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
-
-      - name: Generate Swagger JSON
-        run: swagger tofile --output ${{ env.API_IMPORT_SPECIFICATION_PATH }} ${{ env.API_IMPORT_DLL }} ${{ env.API_IMPORT_VERSION }}
-
+          
       - name: Upload publish folder as artifact
         uses: actions/upload-artifact@v4
         with:
