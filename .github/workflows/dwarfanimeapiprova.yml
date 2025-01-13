@@ -12,7 +12,6 @@ env:
   AZURE_APIM_RESOURCEGROUP: AnimePlanTry_group
   AZURE_APIM_SERVICENAME: DwarfAnimeBackendapitry
   AZURE_APIM_API_ID: DwarfAnimeBackend
-  API_IMPORT_SPECIFICATION_PATH: ./DwarfAnimeBackend/publish/swagger.json
   AZURE_APIM_APPSERVICEURL: https://dwarfanimeapiprova-gtbfechmcganb2aw.northeurope-01.azurewebsites.net
   SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 6.6.1  # Cambié a la versión más reciente
   API_IMPORT_DLL: ./DwarfAnimeBackend/publish/DwarfAnimeBackend.dll
