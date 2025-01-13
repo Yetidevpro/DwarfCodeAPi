@@ -30,23 +30,24 @@ builder.Services.AddSwaggerGen();
 // Configuración de CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://blue-grass-020f9f303.4.azurestaticapps.net")
-              // URL de tu frontend
+        policy.AllowAnyOrigin() // Permitir cualquier origen
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
 var app = builder.Build();
+app.UseCors("AllowAll");
 
 
-if (app.Environment.IsDevelopment())
+
+/*if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+}*/
 
 app.UseHttpsRedirection();
 
@@ -54,11 +55,11 @@ app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
 
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();  // Asegúrate de que las migraciones se apliquen
-}
+}*/
 
 
 app.MapControllers();
