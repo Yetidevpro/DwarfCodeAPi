@@ -24,8 +24,8 @@ builder.Services.AddControllers()
     });
 
 // Configuración para Swagger (documentación y testing)
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
 // Configuración de CORS
 builder.Services.AddCors(options =>
