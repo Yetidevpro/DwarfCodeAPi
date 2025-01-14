@@ -184,4 +184,27 @@ public class UserController : ControllerBase
         return Ok(new { Message = "Login successful", UserId = user.UserId });
     }
 
+    // GET: api/User/{userId}/AvailableAnimes
+    [HttpGet("{userId}/AvailableAnimes")]
+    public async Task<IActionResult> GetAvailableAnimes(int userId)
+    {
+    var user = await _context.Users
+        .Include(u => u.AnimeScores)
+        .ThenInclude(au => au.Anime)
+        .FirstOrDefaultAsync(u => u.UserId == userId);
+    
+    if (user == null)
+    {
+        return NotFound(new { Message = "User not found" });
+    }
+    
+    // Obtener los animes que no están en la lista del usuario
+    var availableAnimes = await _context.Animes
+        .Where(a => !_context.AnimeScores
+            .Any(as => as.UserId == userId && as.AnimeId == a.AnimeId))
+        .ToListAsync();
+    
+    return Ok(availableAnimes);
+    }
+
 }
