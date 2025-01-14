@@ -201,7 +201,7 @@ public class UserController : ControllerBase
     // Obtener los animes que no están en la lista del usuario
     var availableAnimes = await _context.Animes
         .Where(a => !_context.AnimeScores
-            .Any(as => as.UserId == userId && as.AnimeId == a.AnimeId))
+            .Any(aus => aus.UserId == userId && aus.AnimeId == a.AnimeId))
         .ToListAsync();
     
     return Ok(availableAnimes);
