@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DwarfCodeData.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.Data;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -153,6 +154,34 @@ public class UserController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    // POST: api/User/login
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestVerification loginRequest)
+    {
+        if (loginRequest == null || string.IsNullOrEmpty(loginRequest.EmailOrAlias) || string.IsNullOrEmpty(loginRequest.Password))
+        {
+            return BadRequest(new { Message = "Email/Password cannot be empty" });
+        }
+
+        // Buscar el usuario por correo o alias (Name)
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Mail == loginRequest.EmailOrAlias || u.Name == loginRequest.EmailOrAlias);  // Usamos un OR para buscar por Mail o Name
+
+        if (user == null)
+        {
+            return NotFound(new { Message = "User not found" });
+        }
+
+        // Verificar la contraseña
+        if (user.Pasword != loginRequest.Password)  // Usamos la propiedad Pasword para la comparación
+        {
+            return Unauthorized(new { Message = "Incorrect password" });
+        }
+
+        // Si las credenciales son correctas
+        return Ok(new { Message = "Login successful", UserId = user.UserId });
     }
 
 }
