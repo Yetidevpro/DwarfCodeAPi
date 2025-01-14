@@ -16,8 +16,8 @@ namespace DwarfCodeData.Models
 
         public string Pasword { get; set; }
 
-        [JsonIgnore]
-        public List<AnimeScore> AnimeScores { get; set; }
+        [JsonIgnore]  
+        public List<AnimeScore> AnimeScores { get; set; } = new List<AnimeScore>(); 
 
     }
 }
