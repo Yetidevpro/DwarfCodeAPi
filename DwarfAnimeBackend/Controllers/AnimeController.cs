@@ -21,30 +21,10 @@ public class AnimeController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Anime>> GetAllAnimes()
     {
-        var animes = _context.Animes
-            .Include(a => a.AnimeScores)
-            .ThenInclude(au => au.User)
-            .ToList();
-
+        var animes = _context.Animes.ToList();
         return Ok(animes);
     }
 
-    // GET: api/Anime/{id}
-    [HttpGet("{id}")]
-    public ActionResult<Anime> GetAnimeById(int id)
-    {
-        var anime = _context.Animes
-            .Include(a => a.AnimeScores)
-            .ThenInclude(au => au.User)
-            .FirstOrDefault(a => a.AnimeId == id);
-
-        if (anime == null)
-        {
-            return NotFound("Anime not found.");
-        }
-
-        return Ok(anime);
-    }
 
     // POST: api/Anime
     [HttpPost]
@@ -57,9 +37,10 @@ public class AnimeController : ControllerBase
 
         _context.Animes.Add(anime);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(GetAnimeById), new { id = anime.AnimeId }, anime);
-    }
 
+        // Devolvemos el recurso creado con código 201 Created
+        return StatusCode(201, anime);
+    }
 
 
 
@@ -117,61 +98,6 @@ public class AnimeController : ControllerBase
             .ToList();
 
         return Ok(usersWithScores);
-    }
-
-
-    // POST: api/Anime/{animeId}/User/{userId}
-    [HttpPost("{animeId}/User/{userId}")]
-    public async Task<ActionResult> AddUserToAnime(int animeId, int userId, [FromBody] int score)
-    {
-        var anime = await _context.Animes.FindAsync(animeId);
-        var user = await _context.Users.FindAsync(userId);
-
-        if (anime == null || user == null)
-        {
-            return NotFound("Anime or User not found.");
-        }
-        //verificar si user te una puntuació
-        var existingAnimeScore = await _context.AnimeScores
-        .FirstOrDefaultAsync(asc => asc.AnimeId == animeId && asc.UserId == userId);
-
-        if (existingAnimeScore != null)
-        {
-            return BadRequest("User already added to this anime.");
-        }
-
-        var newAnimeScore = new AnimeScore
-        {
-            AnimeId = animeId,
-            UserId = userId,
-            Score = score
-        };
-
-        _context.AnimeScores.Add(newAnimeScore);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetAnimeById), new { id = animeId }, newAnimeScore);
-    }
-
-
-    // PUT: api/Anime/{animeId}/User/{userId}
-    [HttpPut("{animeId}/User/{userId}")]
-    public async Task<ActionResult> UpdateUserAnime(int animeId, int userId, [FromBody] int score)
-    {
-        var existingAnimeScore = await _context.AnimeScores
-            .FirstOrDefaultAsync(asc => asc.AnimeId == animeId && asc.UserId == userId);
-
-        if (existingAnimeScore == null)
-        {
-            return NotFound("Anime-user association not found.");
-        }
-
-        existingAnimeScore.Score = score;
-
-        _context.Entry(existingAnimeScore).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
-        return NoContent();
     }
 
 }
