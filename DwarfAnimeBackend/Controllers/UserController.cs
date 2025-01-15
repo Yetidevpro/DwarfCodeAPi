@@ -202,4 +202,35 @@ public class UserController : ControllerBase
         return Ok(new { Message = "Login successful", UserId = user.UserId });
     }
 
+    
+    // GET: api/User/{userId}/AvailableAnimes
+    [HttpGet("{userId}/AvailableAnimes")]
+    public async Task<IActionResult> GetAvailableAnimesForUser(int userId)
+    {
+        // Verificar si el usuario existe
+        var userExists = await _context.Users.AnyAsync(u => u.UserId == userId);
+        if (!userExists)
+        {
+            return NotFound(new { Message = "User not found." });
+        }
+    
+        // Obtener IDs de animes que el usuario ya ha puntuado
+        var scoredAnimeIds = await _context.AnimeScores
+            .Where(asc => asc.UserId == userId)
+            .Select(asc => asc.AnimeId)
+            .ToListAsync();
+    
+        // Filtrar animes excluyendo los ya puntuados
+        var availableAnimes = await _context.Animes
+            .Where(a => !scoredAnimeIds.Contains(a.AnimeId))
+            .ToListAsync();
+    
+        if (!availableAnimes.Any())
+        {
+            return NotFound(new { Message = "No available animes for this user." });
+        }
+    
+        return Ok(availableAnimes);
+    }
+
 }
