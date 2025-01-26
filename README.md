@@ -108,6 +108,22 @@ This project uses **GitHub Actions** to automate the **Continuous Integration (C
 
 3. **Scalability**: Azure services allow automatic scaling for both the backend and the database to handle higher amounts of traffic and data.
 
+
+## Future Updates
+
+In the upcoming releases, I plan to implement the following improvements and new features:
+
+1. **Secure Password Hashing with PBKDF2**:
+   - Currently, passwords in the application are stored without any security measures. In the future, I will implement a secure hashing algorithm using **PBKDF2** to hash passwords. This will significantly improve the security of user credentials by preventing plaintext password storage.
+
+2. **Enhance API Functionality**:
+   - I aim to add more features and endpoints to the API to improve its functionality. These will include additional resources, advanced queries, and improved user interactions, making the API more powerful and flexible for frontend integration.
+
+3. **Integrate External API for Data Collection**:
+   - Another planned feature is to integrate an external API to gather additional data that will be used within the program. This will allow the application to enrich its content, provide more dynamic responses, and offer better data to users.
+
+These updates are planned to enhance the overall security, functionality, and data capabilities of the application, ensuring that it remains robust and scalable in the future.
+
  
 
 
