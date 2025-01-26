@@ -32,6 +32,22 @@ This is the backend project developed in ASP.NET Core (C#), composed of two appl
    - The entire development process is automated through a **CI/CD** pipeline that integrates **GitHub Actions** with **Azure Services**.
    - Every code change goes through automated testing, building, and continuous deployment to the cloud environments.
 
+### Accessing the API on Azure
+
+To access the API deployed on Azure, simply visit the provided URL in the Azure configuration. The production environment is fully in the cloud, so you don't need to run the project locally if you just want to interact with the API.
+
+## CI/CD with Azure and GitHub Actions
+
+This project uses **GitHub Actions** to automate the **Continuous Integration (CI)** and **Continuous Deployment (CD)** process. Code changes are automatically tested, built, and deployed to **Azure services**.
+
+### CI/CD Flow
+
+1. **Development**: Each time a push or pull request is made to the repository, GitHub Actions triggers a series of steps including code compilation, unit tests execution, and code quality validation.
+
+2. **Automatic deployment**: When the tests and build are successful, the changes are automatically deployed to **Azure**, both for the backend and the SQL database.
+
+3. **Scalability**: Azure services allow automatic scaling for both the backend and the database to handle higher amounts of traffic and data.
+
 ## Installation
 
 ### Prerequisites
@@ -91,24 +107,8 @@ This is the backend project developed in ASP.NET Core (C#), composed of two appl
      - This ensures the API uses the correct database when running locally.
 
 By following these steps, you can easily run and test the API locally, interact with it via Swagger, and ensure it works before deploying it to Azure.
+
   
-### Accessing the API on Azure
-
-To access the API deployed on Azure, simply visit the provided URL in the Azure configuration. The production environment is fully in the cloud, so you don't need to run the project locally if you just want to interact with the API.
-
-## CI/CD with Azure and GitHub Actions
-
-This project uses **GitHub Actions** to automate the **Continuous Integration (CI)** and **Continuous Deployment (CD)** process. Code changes are automatically tested, built, and deployed to **Azure services**.
-
-### CI/CD Flow
-
-1. **Development**: Each time a push or pull request is made to the repository, GitHub Actions triggers a series of steps including code compilation, unit tests execution, and code quality validation.
-
-2. **Automatic deployment**: When the tests and build are successful, the changes are automatically deployed to **Azure**, both for the backend and the SQL database.
-
-3. **Scalability**: Azure services allow automatic scaling for both the backend and the database to handle higher amounts of traffic and data.
-
-
 ## Future Updates
 
 In the upcoming releases, I plan to implement the following improvements and new features:
