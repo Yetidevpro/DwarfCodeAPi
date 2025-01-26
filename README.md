@@ -77,14 +77,15 @@ This project uses **GitHub Actions** to automate the **Continuous Integration (C
      ```bash
     dotnet ef database update
      
-5. **Run migrations**:
+5. **Run the backend**:
     ```bash
     dotnet run
 
 6. **Access the API:**
     To access the API locally, you'll need to run the backend project and ensure that **Swagger** is enabled for testing and interacting with the API in your local environment. Follow these steps:
 
-    1. **Run the backend locally**: 
+    1. **Run the backend locally**:
+       
      - If you want to run the project locally, navigate to the `DwarfAnimeBackend` folder and use the following command:
      ```bash
      dotnet run
@@ -92,10 +93,12 @@ This project uses **GitHub Actions** to automate the **Continuous Integration (C
      - This will start the API on your local machine, usually accessible via `http://localhost:5000`.
 
     2. **Activate Swagger**:
+       
      - Swagger is included by default for local development to interact with the API. 
      - When you run the project locally, Swagger will be available at `http://localhost:5000/swagger` (or another port, depending on your configuration).
 
     3. **Configure appsettings.json**:
+       
      - In the `appsettings.json` file, configure the appropriate connection strings or settings to point to your local database if necessary. You will need to adjust the connection string to connect to your local SQL Server database (if not using Azure):
      ```json
      {
