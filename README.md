@@ -63,7 +63,7 @@ This is the backend project developed in ASP.NET Core (C#), composed of two appl
      
 5. **Run migrations**:
     ```bash
-  dotnet run
+    dotnet run
 
 6. **Access the API:**
     To access the API locally, you'll need to run the backend project and ensure that **Swagger** is enabled for testing and interacting with the API in your local environment. Follow these steps:
