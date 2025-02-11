@@ -48,69 +48,6 @@ This project uses **GitHub Actions** to automate the **Continuous Integration (C
 
 3. **Scalability**: Azure services allow automatic scaling for both the backend and the database to handle higher amounts of traffic and data.
 
-## Installation
-
-### Prerequisites
-
-- .NET Core 6 or higher.
-- An **Azure** account to view and manage the deployed services in the cloud.
-- Access to the **GitHub** repository if you want to contribute or make modifications.
-
-### Steps to run the project locally (optional)
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/DwarfAnimeBackend.git
-   Install dependencies: Navigate to each project's folder and restore the NuGet packages:
-
-2. **Install dependencies:** Navigate to each project's folder and restore the NuGet packages:
-    ```bash
-    cd DwarfAnimeBackend
-    dotnet restore
-    cd ../DwarfCodeData
-    dotnet restore
-
-3. **Configure local database:**
-  (optional if not using Azure): Modify the appsettings.json file to connect to your local SQL Server database.
-
-4. **Run migrations**:
-     ```bash
-    dotnet ef database update
-     
-5. **Run the backend**:
-    ```bash
-    dotnet run
-
-6. **Access the API:**
-    To access the API locally, you'll need to run the backend project and ensure that **Swagger** is enabled for testing and interacting with the API in your local environment. Follow these steps:
-
-    1. **Run the backend locally**:
-       
-     - If you want to run the project locally, navigate to the `DwarfAnimeBackend` folder and use the following command:
-     ```bash
-     dotnet run
-     ```
-     - This will start the API on your local machine, usually accessible via `http://localhost:5000`.
-
-    2. **Activate Swagger**:
-       
-     - Swagger is included by default for local development to interact with the API. 
-     - When you run the project locally, Swagger will be available at `http://localhost:5000/swagger` (or another port, depending on your configuration).
-
-    3. **Configure appsettings.json**:
-       
-     - In the `appsettings.json` file, configure the appropriate connection strings or settings to point to your local database if necessary. You will need to adjust the connection string to connect to your local SQL Server database (if not using Azure):
-     ```json
-     {
-       "ConnectionStrings": {
-         "DefaultConnection": "Server=localhost;Database=YourDatabaseName;Trusted_Connection=True;MultipleActiveResultSets=true"
-       }
-     }
-     ```
-     - This ensures the API uses the correct database when running locally.
-
-By following these steps, you can easily run and test the API locally, interact with it via Swagger, and ensure it works before deploying it to Azure.
-
   
 ## Future Updates
 
